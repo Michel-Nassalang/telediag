@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "386045510321",
+    "project_id": "telediag-6be35",
+    "storage_bucket": "telediag-6be35.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:386045510321:android:a0b495f2bf816168da1890",
+        "android_client_info": {
+          "package_name": "com.senegal.telediag"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "386045510321-bj8q9qbjb5ev4pasgq2pm9o14tpr22bb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpCyckD4-GD5Memb9LqrmmCdnABSRSNR0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "386045510321-bj8q9qbjb5ev4pasgq2pm9o14tpr22bb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
