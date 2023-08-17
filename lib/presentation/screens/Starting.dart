@@ -1,7 +1,6 @@
-import 'package:Telediag/presentation/screens/auth.dart';
+import 'package:Telediag/services/init.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:concentric_transition/concentric_transition.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Starting extends StatefulWidget {
@@ -13,7 +12,6 @@ class Starting extends StatefulWidget {
 
 class _StartingState extends State<Starting> {
   final Duration duration = const Duration(milliseconds: 800);
-  @override
   List<ConcentricModel> concentrics = [
     ConcentricModel(
       urlimage: "assets/images/prise.png",
@@ -62,10 +60,10 @@ class _StartingState extends State<Starting> {
                       padding: const EdgeInsets.only(top: 20, right: 20),
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                               context,
                               MaterialPageRoute<void>(
-                                builder: (BuildContext context) => const Auth(),
+                                builder: (BuildContext context) => const Initial(),
                               ));
                         },
                         child: Text(
@@ -84,8 +82,6 @@ class _StartingState extends State<Starting> {
                   duration: duration,
                   delay: const Duration(milliseconds: 800),
                   child: SizedBox(
-                    // height: 290,
-                    // width: 300,
                     child: Image.asset(
                       concentrics[index].urlimage,
                       width: 500,
@@ -114,11 +110,11 @@ class _StartingState extends State<Starting> {
                             child: ElevatedButton(
                                 clipBehavior: Clip.hardEdge,
                                 onPressed: () {
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute<void>(
                                         builder: (BuildContext context) =>
-                                            const Auth(),
+                                            const Initial(),
                                       ));
                                 },
                                 style: ButtonStyle(

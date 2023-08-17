@@ -19,11 +19,14 @@ class _AuthState extends State<Auth> with SingleTickerProviderStateMixin {
   final emailControl = TextEditingController();
   final passwordControl = TextEditingController();
   final nameControl = TextEditingController();
-  final pseudoControl = TextEditingController();
-  final ageControl = TextEditingController();
+  final surnameControl = TextEditingController();
+  final telControl = TextEditingController();
+  final etablissementControl = TextEditingController();
+  final sideControl = TextEditingController();
+  var specialite = "";
+  var titre = "";
   String role = "";
-  final specialiteControl = TextEditingController();
-  final departementControl = TextEditingController();
+
   final AuthentificationService _auth = AuthentificationService();
   bool showSignIn = true;
   bool isConnected = true;
@@ -35,8 +38,10 @@ class _AuthState extends State<Auth> with SingleTickerProviderStateMixin {
     emailControl.dispose();
     passwordControl.dispose();
     nameControl.dispose();
-    pseudoControl.dispose();
-    ageControl.dispose();
+    surnameControl.dispose();
+    etablissementControl.dispose();
+    sideControl.dispose();
+    telControl.dispose();
     controlAnimation.dispose();
     super.dispose();
   }
@@ -57,11 +62,14 @@ class _AuthState extends State<Auth> with SingleTickerProviderStateMixin {
     setState(() {
       _formKey.currentState!.reset();
       error = '';
+      specialite = "";
       emailControl.text = '';
       passwordControl.text = '';
       nameControl.text = '';
-      pseudoControl.text = '';
-      ageControl.text = '';
+      surnameControl.text = '';
+      etablissementControl.text = '';
+      sideControl.text = '';
+      telControl.text = '';
       showSignIn = !showSignIn;
     });
   }
@@ -77,15 +85,15 @@ class _AuthState extends State<Auth> with SingleTickerProviderStateMixin {
         var email = emailControl.value.text;
         var password = passwordControl.value.text;
         var name = nameControl.value.text;
-        var pseudo = pseudoControl.value.text;
-        var age = ageControl.value.text;
-        var specialite = specialiteControl.value.text;
-        var departement = departementControl.value.text;
+        var surname = surnameControl.value.text;
+        var tel = telControl.value.text;
+        var etablissement = etablissementControl.value.text;
+        var side = sideControl.value.text;
 
         dynamic result = showSignIn
             ? await _auth.signInWithEmailAndPassword(email, password)
-            : await _auth.registerWithEmailAndPassword(name, pseudo, age, role,
-                specialite, departement, email, password);
+            : await _auth.registerWithEmailAndPassword(name, surname, titre,
+                role, specialite, tel, email, etablissement, side, password);
         if (result == null) {
           setState(() {
             loading = false;
@@ -220,21 +228,21 @@ class _AuthState extends State<Auth> with SingleTickerProviderStateMixin {
                                 ? const SizedBox()
                                 : FadeInUpBig(
                                     duration: duration,
-                                    delay: const Duration(milliseconds: 1100),
+                                    delay: const Duration(milliseconds: 900),
                                     child: SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.9,
                                       child: TextFormField(
                                         style: const TextStyle(
                                             color: Colors.white),
-                                        controller: pseudoControl,
+                                        controller: surnameControl,
                                         autofocus: false,
                                         obscureText: false,
                                         maxLines: 1,
                                         validator: (value) => value!.isEmpty
-                                            ? 'Donner votre pseudo'
+                                            ? 'Donner votre prénom'
                                             : null,
-                                        decoration: fieldecor("Pseudo"),
+                                        decoration: fieldecor("Prénom"),
                                       ),
                                     ),
                                   ),
@@ -245,7 +253,7 @@ class _AuthState extends State<Auth> with SingleTickerProviderStateMixin {
                                 ? const SizedBox()
                                 : FadeInUpBig(
                                     duration: duration,
-                                    delay: const Duration(milliseconds: 1100),
+                                    delay: const Duration(milliseconds: 1000),
                                     child: SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.9,
@@ -276,57 +284,107 @@ class _AuthState extends State<Auth> with SingleTickerProviderStateMixin {
                                 ? const SizedBox()
                                 : FadeInUpBig(
                                     duration: duration,
+                                    delay: const Duration(milliseconds: 1100),
+                                    child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.9,
+                                      child: DropdownButtonFormField(
+                                        style:
+                                            const TextStyle(color: Colors.grey),
+                                        items: [
+                                          "Docteur",
+                                          "Professeur",
+                                          "Aide-Soignant"
+                                        ].map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
+                                        onChanged: (String? value) {
+                                          setState(() {
+                                            titre = value!;
+                                          });
+                                        },
+                                        decoration: fieldecor("Titre"),
+                                      ),
+                                    ),
+                                  ),
+                          ),
+                          const Padding(padding: EdgeInsets.only(top: 40)),
+                          Center(
+                            child: showSignIn
+                                ? const SizedBox()
+                                : FadeInUpBig(
+                                    duration: duration,
                                     delay: const Duration(milliseconds: 1200),
                                     child: SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.9,
-                                      child: TextFormField(
-                                        style: const TextStyle(
-                                            color: Colors.white),
-                                        controller: specialiteControl,
-                                        autofocus: false,
-                                        obscureText: false,
-                                        maxLines: 1,
-                                        validator: (value) => value!.isEmpty
-                                            ? 'Donner votre spécialité'
-                                            : null,
+                                      child: DropdownButtonFormField(
+                                        style:
+                                            const TextStyle(color: Colors.grey),
+                                        items: [
+                                          "Parasitologie",
+                                          "Dermatologie",
+                                          "Aide-Soignant",
+                                          "Autre"
+                                        ].map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
+                                        onChanged: (String? value) {
+                                          setState(() {
+                                            specialite = value!;
+                                          });
+                                        },
                                         decoration: fieldecor("Spécialité"),
                                       ),
                                     ),
                                   ),
                           ),
-                          const Padding(padding: EdgeInsets.only(top: 40)),
-                          Center(
-                            child: showSignIn
-                                ? const SizedBox()
-                                : FadeInUpBig(
-                                    duration: duration,
-                                    delay: const Duration(milliseconds: 1300),
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.9,
-                                      child: TextFormField(
-                                        style: const TextStyle(
-                                            color: Colors.white),
-                                        controller: departementControl,
-                                        autofocus: false,
-                                        obscureText: false,
-                                        maxLines: 1,
-                                        validator: (value) => value!.isEmpty
-                                            ? 'Donner votre departement'
-                                            : null,
-                                        decoration: fieldecor("Departement"),
+                          specialite.contains("Autre")
+                              ? Padding(
+                                  padding: const EdgeInsets.only(top: 40),
+                                  child: Center(
+                                    child: FadeInUpBig(
+                                      duration: duration,
+                                      delay: const Duration(milliseconds: 200),
+                                      child: SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.9,
+                                        child: TextFormField(
+                                          onChanged: (value) {
+                                            specialite = value;
+                                          },
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                          autofocus: false,
+                                          obscureText: false,
+                                          maxLines: 1,
+                                          validator: (value) => value!.isEmpty
+                                              ? 'Donner votre specialité'
+                                              : null,
+                                          decoration:
+                                              fieldecor("Autre spécialité"),
+                                        ),
                                       ),
                                     ),
                                   ),
-                          ),
+                                )
+                              : const Padding(padding: EdgeInsets.zero),
                           const Padding(padding: EdgeInsets.only(top: 40)),
                           Center(
                             child: showSignIn
                                 ? const SizedBox()
                                 : FadeInUpBig(
                                     duration: duration,
-                                    delay: const Duration(milliseconds: 1400),
+                                    delay: const Duration(milliseconds: 1500),
                                     child: SizedBox(
                                       width: MediaQuery.of(context).size.width *
                                           0.9,
@@ -335,20 +393,61 @@ class _AuthState extends State<Auth> with SingleTickerProviderStateMixin {
                                             color: Colors.white),
                                         keyboardType: const TextInputType
                                             .numberWithOptions(),
-                                        controller: ageControl,
+                                        controller: telControl,
                                         autofocus: false,
                                         obscureText: false,
                                         maxLines: 1,
-                                        validator: (value) {
-                                          if (value!.isEmpty) {
-                                            return 'Veuillez donner votre age';
-                                          } else if (int.parse(value) < 18) {
-                                            return 'Vous n\'avez pas l\'age moyenne pour vous inscrire';
-                                          } else {
-                                            return null;
-                                          }
-                                        },
-                                        decoration: fieldecor("Age"),
+                                        decoration: fieldecor("Télephone"),
+                                      ),
+                                    ),
+                                  ),
+                          ),
+                          const Padding(padding: EdgeInsets.only(top: 40)),
+                          Center(
+                            child: showSignIn
+                                ? const SizedBox()
+                                : FadeInUpBig(
+                                    duration: duration,
+                                    delay: const Duration(milliseconds: 1600),
+                                    child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.9,
+                                      child: TextFormField(
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                        controller: etablissementControl,
+                                        autofocus: false,
+                                        obscureText: false,
+                                        maxLines: 1,
+                                        validator: (value) => value!.isEmpty
+                                            ? 'Donner votre établissement'
+                                            : null,
+                                        decoration: fieldecor("Etablissement"),
+                                      ),
+                                    ),
+                                  ),
+                          ),
+                          const Padding(padding: EdgeInsets.only(top: 40)),
+                          Center(
+                            child: showSignIn
+                                ? const SizedBox()
+                                : FadeInUpBig(
+                                    duration: duration,
+                                    delay: const Duration(milliseconds: 1700),
+                                    child: SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.9,
+                                      child: TextFormField(
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                        controller: sideControl,
+                                        autofocus: false,
+                                        obscureText: false,
+                                        maxLines: 1,
+                                        validator: (value) => value!.isEmpty
+                                            ? 'Donner votre lieu d\'exercice'
+                                            : null,
+                                        decoration: fieldecor("Lieu"),
                                       ),
                                     ),
                                   ),
@@ -357,7 +456,7 @@ class _AuthState extends State<Auth> with SingleTickerProviderStateMixin {
                           Center(
                             child: FadeInUpBig(
                               duration: duration,
-                              delay: const Duration(milliseconds: 1500),
+                              delay: const Duration(milliseconds: 1400),
                               child: SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.9,
                                 child: TextFormField(
@@ -378,7 +477,7 @@ class _AuthState extends State<Auth> with SingleTickerProviderStateMixin {
                           Center(
                             child: FadeInUpBig(
                               duration: duration,
-                              delay: const Duration(milliseconds: 1600),
+                              delay: const Duration(milliseconds: 1000),
                               child: SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.9,
                                 child: Stack(

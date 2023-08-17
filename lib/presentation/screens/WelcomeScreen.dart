@@ -1,8 +1,11 @@
+import 'package:Telediag/data/models/User.dart';
 import 'package:Telediag/presentation/screens/Starting.dart';
+import 'package:Telediag/services/init.dart';
 import 'package:animate_do/animate_do.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -11,15 +14,15 @@ class WelcomeScreen extends StatefulWidget {
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> {
+class _WelcomeScreenState extends State<WelcomeScreen>   with SingleTickerProviderStateMixin {
   final Duration duration = const Duration(milliseconds: 800);
-
+  final user = FirebaseAuth.instance.currentUser;
   @override
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 5)).then((value) =>
         Navigator.of(context).pushReplacement(
-            CupertinoPageRoute(builder: (context) => const Starting())));
+            MaterialPageRoute(builder: (context) => !(user == null || Provider.of<AppUser?>(context) == null) ? const Initial(): const Starting())));
   }
 
   @override
@@ -44,8 +47,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   left: 5,
                   right: 5,
                 ),
-                // width: size.width,
-                // height: size.height / 2,
                 child: Image.asset(
                   "assets/images/logosf.png",
                   width: 500,

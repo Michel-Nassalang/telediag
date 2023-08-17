@@ -8,20 +8,16 @@ class ConnectionApp extends StatefulWidget {
   _ConnectionAppState createState() => _ConnectionAppState();
 }
 
-class _ConnectionAppState extends State<ConnectionApp>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+class _ConnectionAppState extends State<ConnectionApp> {
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this);
   }
 
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
   }
 
   @override

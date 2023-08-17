@@ -5,16 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthentificationService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   AppUser _userFromFirebase(User? user){
-    initUser(user);
     if (user != null) {
       return AppUser(uid: user.uid);
     }else{
       return null!;
     }
-  }
-
-  initUser(User? user) async {
-    if (user == null) return;
   }
 
   Stream<AppUser> get user{
@@ -30,11 +25,12 @@ class AuthentificationService {
     }
   }
   
-  Future registerWithEmailAndPassword(String name, String pseudo, String age, String role, String specialite, String departement,  String email, String password) async {
+  Future registerWithEmailAndPassword(String name, String surname, String titre, String role, String specialite, String email,
+      String tel, String etablissement, String side, String password) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
-      await DatabaseService(user!.uid).saveUser(name, pseudo, age, role, specialite, departement, 'profil.png');
+      await DatabaseService(user!.uid).saveUser(name, surname, titre, role, specialite, email, tel, etablissement, side, 'profil.png');
       return _userFromFirebase(user);
     } catch (e) {
       return null;
